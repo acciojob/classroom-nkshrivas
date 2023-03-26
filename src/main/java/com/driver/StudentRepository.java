@@ -2,6 +2,7 @@ package com.driver;
 
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +52,13 @@ public class StudentRepository {
     }
 
     public void deleteTeacherByName(String teacher) {
+        for(Map.Entry<Student, Teacher> entry:pairDb.entrySet()){
+            if(entry.getValue().equals(teacher)){
+                studentDb.remove(entry.getKey().getName());
+                pairDb.remove(entry.getKey().getName());
+                System.out.println("everything remove");
+            }
+        }
         teacherDb.remove(teacher);
     }
 
