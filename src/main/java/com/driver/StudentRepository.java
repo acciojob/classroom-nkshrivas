@@ -56,7 +56,7 @@ public class StudentRepository {
             if(entry.getValue().equals(teacher)){
                 studentDb.remove(entry.getKey().getName());
                 pairDb.remove(entry.getKey().getName());
-                System.out.println("everything remove");
+//                System.out.println("everything remove");
             }
         }
         teacherDb.remove(teacher);
