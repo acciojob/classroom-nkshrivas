@@ -48,7 +48,12 @@ public class StudentRepository {
     }
 
     public List<String> getAllStudent() {
-       return studentDb.keySet().stream().toList();
+        List<String> allSrtudents=new ArrayList<>();
+        for(Map.Entry<String,Student> entry:studentDb.entrySet()){
+            allSrtudents.add(entry.getKey());
+        }
+
+       return allSrtudents;
     }
 
     public void deleteTeacherByName(String teacher) {
