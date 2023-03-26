@@ -13,7 +13,7 @@ public class StudentRepository {
     
     HashMap<String,Student> studentDb=new HashMap<>();
     HashMap<String,Teacher> teacherDb=new HashMap<>();
-    HashMap<Student,Teacher> pairDb=new HashMap<>();
+    HashMap<String,List<String>> teacherStudent = new HashMap<>();
 
 
     public void addStudent(Student student){
@@ -24,7 +24,18 @@ public class StudentRepository {
     }
     
     public void addStudentTeacher(String student,String teacher){
-        pairDb.put(studentDb.get(student),teacherDb.get(teacher));
+        List<String> students = teacherStudent.get(teacher);
+
+        if(students==null){
+            students = new ArrayList<>();
+        }
+
+        students.add(student);
+
+        teacherStudent.put(teacher,students);
+
+
+        return ;
     }
 
     public Student getStudent(String name) {
@@ -36,15 +47,7 @@ public class StudentRepository {
     }
 
     public List<String> getStudentByTeacherName(String teacher) {
-        List<String> stu=new ArrayList<>();
-
-        for(Map.Entry<Student, Teacher> entry:pairDb.entrySet()){
-            if(entry.getValue().getName().equals(teacher)){
-                stu.add(entry.getKey().getName());
-            }
-        }
-        return stu;
-
+        return teacherStudent.get(teacher);
     }
 
     public List<String> getAllStudent() {
@@ -57,17 +60,26 @@ public class StudentRepository {
     }
 
     public void deleteTeacherByName(String teacher) {
-        for(Map.Entry<Student, Teacher> entry:pairDb.entrySet()){
-            if(entry.getValue().equals(teacher)){
-                studentDb.remove(entry.getKey().getName());
-                pairDb.remove(entry.getKey().getName());
-//                System.out.println("everything remove");
-            }
+        for(String str : teacherStudent.get(teacher)){
+
+            studentDb.remove(str);
+
         }
+        teacherStudent.remove(teacher);
         teacherDb.remove(teacher);
     }
 
     public void deleteAllTeacher() {
-        teacherDb.clear();
+        for(String teacher : teacherDb.keySet())
+        {
+            for(String str : teacherStudent.get(teacher)){
+
+                studentDb.remove(str);
+
+            }
+            teacherStudent.remove(teacher);
+            teacherDb.remove(teacher);
+
+        }
     }
 }
